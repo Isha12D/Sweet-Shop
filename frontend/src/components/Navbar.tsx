@@ -1,6 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
 import { useUser } from "../context/UserContext";
+import { useAdmin } from "../context/AdminContext";
+//import { Request, Response, NextFunction } from "express";
+//import jwt from "jsonwebtoken";
+
 
 export default function Navbar() {
   const [open, setOpen] = useState(false); // Mobile menu
@@ -8,8 +12,10 @@ export default function Navbar() {
   const [showLogin, setShowLogin] = useState(true); // Toggle login/signup
   const [showRoleModal, setShowRoleModal] = useState(false); // Role selection modal
   const [loginRole, setLoginRole] = useState<"user" | "admin">("user");
-
+  
   const { user, setUser } = useUser();
+const { admin, setAdmin } = useAdmin();
+
 
   // Login form state
   const [loginEmail, setLoginEmail] = useState("");
@@ -22,28 +28,46 @@ export default function Navbar() {
 
   // --- LOGIN ---
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:5001/api/login", {
+  e.preventDefault();
+
+  try {
+    const res = await axios.post(
+      loginRole === "admin"
+        ? "http://localhost:5001/api/admin/login"
+        : "http://localhost:5001/api/login",
+      {
         email: loginEmail,
         password: loginPassword,
-        role: loginRole,
+      }
+    );
+
+    if (loginRole === "admin") {
+      setAdmin({
+        name: res.data.name,
+        role: "admin",
+      });
+
+      localStorage.setItem("adminToken", res.data.token);
+
+      alert("Admin logged in!");
+      window.location.href = "/admin";
+    } else {
+      setUser({
+        name: res.data.name,
+        role: "user",
       });
 
       localStorage.setItem("token", res.data.token);
 
-      // set context user
-      setUser({
-        name: res.data.name, // make sure API returns user name
-        role: loginRole,
-      });
-
-      alert(`Login successful as ${loginRole}!`);
-      setShowAuthModal(false);
-    } catch (err: any) {
-      alert(err.response?.data?.message || "Login failed");
+      alert("User logged in!");
     }
-  };
+
+    setShowAuthModal(false);
+  } catch (err: any) {
+    alert(err.response?.data?.message || "Login failed");
+  }
+};
+
 
   // --- SIGNUP ---
   const handleSignup = async (e: React.FormEvent) => {
