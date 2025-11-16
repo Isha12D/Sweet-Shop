@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "rootDir": "./src",
-    "outDir": "./dist",
+    "target": "ES2020",
+    "module": "CommonJS",
+    "rootDir": ".",       // current folder as root
+    "outDir": "dist",
     "esModuleInterop": true,
     "strict": true,
+    "skipLibCheck": true,
+    "typeRoots": ["./types", "./node_modules/@types"],
     "resolveJsonModule": true
-  }
+  },
+  "include": ["server.ts"]
 }

@@ -1,21 +1,16 @@
 
-import Navbar from "./components/Navbar.tsx"
-import Footer from "./components/Footer.tsx"
-import Hero from "./components/Hero.tsx"
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Footer from './components/Footer';
 
 function App() {
-  
-
   return (
     <>
-      <div>
-       <Navbar/>
-       <Hero/>
-       <Footer/>
-      </div>
-      
+    <Navbar/>
+    <Hero/>
+    <Footer/>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
