@@ -1,134 +1,145 @@
-// src/pages/AdminDashboard.tsx
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { useAdmin } from "../context/AdminContext";
 
 export default function AdminDashboard() {
-  const { admin } = useAdmin();
-  const [sweets, setSweets] = useState<any[]>([]);
-  const [newSweet, setNewSweet] = useState({ name: "", price: "", quantity: "" });
-
-  // fetch sweets
-  const fetchSweets = async () => {
-    const res = await axios.get("http://localhost:5001/api/sweets");
-    setSweets(res.data);
-  };
+  const [adminName, setAdminName] = useState("");
 
   useEffect(() => {
-    fetchSweets();
+    const storedAdmin = localStorage.getItem("adminName") || "Admin";
+    setAdminName(storedAdmin);
   }, []);
 
-  const addSweet = async () => {
-    await axios.post(
-      "http://localhost:5001/api/admin/sweets",
-      newSweet,
-      { headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` } }
-    );
-    fetchSweets();
-  };
-
-  const deleteSweet = async (id: string) => {
-    await axios.delete(
-      `http://localhost:5001/api/admin/sweets/${id}`,
-      { headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` } }
-    );
-    fetchSweets();
-  };
-
-  const restockSweet = async (id: string) => {
-    await axios.post(
-      `http://localhost:5001/api/admin/sweets/${id}/restock`,
-      { amount: 5 },
-      { headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` } }
-    );
-    fetchSweets();
-  };
-
-  const purchaseSweet = async (id: string) => {
-    await axios.post(`http://localhost:5001/api/sweets/${id}/purchase`);
-    fetchSweets();
-  };
-
-  if (!admin) return <h1 className="text-center mt-20 text-3xl font-bold text-red-600">Access Denied</h1>;
+  const initials = adminName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
 
   return (
-    <div className="p-10 bg-amber-50 min-h-screen">
-      <h1 className="text-4xl font-bold text-pink-600 mb-10">Admin Dashboard</h1>
+    <div className="flex w-full min-h-screen bg-[#faeee4]">
 
-      {/* Add Sweet Form */}
-      <div className="bg-white p-6 rounded-xl shadow-md w-96 mb-10">
-        <h2 className="text-xl font-bold mb-4">Add New Sweet</h2>
+      {/* ------------------- SIDEBAR ------------------- */}
+      <aside className="w-64 bg-[#7a3c26] text-white p-6 flex flex-col">
+        <h2 className="text-2xl font-bold mb-8">Admin Panel</h2>
 
-        <input
-          className="border p-2 w-full mb-3 rounded"
-          placeholder="Sweet Name"
-          onChange={(e) => setNewSweet({ ...newSweet, name: e.target.value })}
-        />
-
-        <input
-          className="border p-2 w-full mb-3 rounded"
-          placeholder="Price"
-          type="number"
-          onChange={(e) => setNewSweet({ ...newSweet, price: e.target.value })}
-        />
-
-        <input
-          className="border p-2 w-full mb-3 rounded"
-          placeholder="Quantity"
-          type="number"
-          onChange={(e) => setNewSweet({ ...newSweet, quantity: e.target.value })}
-        />
+        <nav className="flex flex-col gap-4">
+          <a href="#" className="hover:bg-[#a86a4e] px-3 py-2 rounded-md">
+            Dashboard
+          </a>
+          <a href="#" className="hover:bg-[#a86a4e] px-3 py-2 rounded-md">
+            Sweets
+          </a>
+          <a href="#" className="hover:bg-[#a86a4e] px-3 py-2 rounded-md">
+            Users
+          </a>
+        </nav>
 
         <button
-          onClick={addSweet}
-          className="bg-pink-500 text-white w-full py-2 rounded-lg hover:bg-pink-600"
+          className="mt-auto bg-red-500 hover:bg-red-600 py-2 px-4 rounded-lg"
+          onClick={() => {
+            localStorage.removeItem("adminToken");
+            localStorage.removeItem("adminName");
+            window.location.href = "/admin-login";
+          }}
         >
-          Add Sweet
+          Logout
         </button>
-      </div>
+      </aside>
 
-      {/* Sweet Table */}
-      <table className="w-full bg-white shadow-md rounded-xl overflow-hidden">
-        <thead className="bg-pink-200">
-          <tr>
-            <th className="p-3">Name</th>
-            <th className="p-3">Price</th>
-            <th className="p-3">Quantity</th>
-            <th className="p-3">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sweets.map((s) => (
-            <tr key={s._id} className="border-b">
-              <td className="p-3">{s.name}</td>
-              <td className="p-3">{s.price}</td>
-              <td className="p-3">{s.quantity}</td>
-              <td className="p-3 flex gap-3">
-                <button
-                  onClick={() => purchaseSweet(s._id)}
-                  className="bg-green-500 text-white px-3 py-1 rounded"
-                >
-                  Buy
-                </button>
+      {/* ------------------- MAIN CONTENT ------------------- */}
+      <main className="flex-1 p-8">
+        
+        {/* ---------- TOP BAR ---------- */}
+        <div className="flex justify-between items-center mb-10">
+          <h1 className="text-3xl font-bold text-[#7a3c26]">
+            Welcome, {adminName}
+          </h1>
 
-                <button
-                  onClick={() => restockSweet(s._id)}
-                  className="bg-blue-500 text-white px-3 py-1 rounded"
-                >
-                  Restock
-                </button>
+          <div className="w-12 h-12 rounded-full bg-[#7a3c26] text-white flex items-center justify-center text-xl font-semibold shadow-lg">
+            {initials}
+          </div>
+        </div>
 
-                <button
-                  onClick={() => deleteSweet(s._id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        {/* ---------- STATS CARDS ---------- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="p-6 rounded-xl bg-white border shadow">
+            <h3 className="text-lg font-semibold text-[#7a3c26]">Total Sweets</h3>
+            <p className="text-3xl font-bold mt-2">42</p>
+          </div>
+
+          <div className="p-6 rounded-xl bg-white border shadow">
+            <h3 className="text-lg font-semibold text-[#7a3c26]">Stock Items</h3>
+            <p className="text-3xl font-bold mt-2">310</p>
+          </div>
+
+          <div className="p-6 rounded-xl bg-white border shadow">
+            <h3 className="text-lg font-semibold text-[#7a3c26]">Out of Stock</h3>
+            <p className="text-3xl font-bold mt-2">3</p>
+          </div>
+        </div>
+
+        {/* ---------- RECENTLY ADDED SWEETS ---------- */}
+        <section className="mb-10">
+          <h2 className="text-2xl font-bold text-[#7a3c26] mb-4">Recently Added Sweets</h2>
+
+          <div className="overflow-x-auto">
+            <table className="w-full border bg-white rounded-xl overflow-hidden">
+              <thead className="bg-[#f7e5d6]">
+                <tr>
+                  <th className="p-3 text-left">Sweet</th>
+                  <th className="p-3 text-left">Price (₹)</th>
+                  <th className="p-3 text-left">Stock</th>
+                  <th className="p-3 text-left">Date Added</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr className="border-t">
+                  <td className="p-3">Kaju Katli</td>
+                  <td className="p-3">500</td>
+                  <td className="p-3">40 kg</td>
+                  <td className="p-3">12 Feb 2025</td>
+                </tr>
+
+                <tr className="border-t">
+                  <td className="p-3">Gulab Jamun</td>
+                  <td className="p-3">280</td>
+                  <td className="p-3">25 kg</td>
+                  <td className="p-3">11 Feb 2025</td>
+                </tr>
+
+                <tr className="border-t">
+                  <td className="p-3">Rasgulla</td>
+                  <td className="p-3">300</td>
+                  <td className="p-3">32 kg</td>
+                  <td className="p-3">10 Feb 2025</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* ---------- POPULAR SWEETS ---------- */}
+        <section>
+          <h2 className="text-2xl font-bold text-[#7a3c26] mb-4">Popular Sweets</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-4 bg-white border rounded-xl shadow">
+              <p className="font-semibold text-[#7a3c26]">Kaju Katli</p>
+              <p className="text-sm">Sold: 120</p>
+            </div>
+
+            <div className="p-4 bg-white border rounded-xl shadow">
+              <p className="font-semibold text-[#7a3c26]">Gulab Jamun</p>
+              <p className="text-sm">Sold: 98</p>
+            </div>
+
+            <div className="p-4 bg-white border rounded-xl shadow">
+              <p className="font-semibold text-[#7a3c26]">Rasgulla</p>
+              <p className="text-sm">Sold: 150</p>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }

@@ -4,14 +4,10 @@ import sweet1 from '../assets/sweet1.png';
 import sweet2 from '../assets/sweet2.png';
 import sweet3 from '../assets/sweet3.png';
 
-
-// REMOVE SLIDES IF YOU DON'T NEED THEM NOW
-
 export default function Hero() {
   const [loading, setLoading] = useState(true);
   const [showVideo, setShowVideo] = useState(false);
 
-  // HIDE LOADER AFTER 2 SECONDS → SHOW VIDEO
   useEffect(() => {
     const t = setTimeout(() => {
       setLoading(false);
@@ -26,27 +22,19 @@ export default function Hero() {
 
       {/* ---------------------- LOADER ---------------------- */}
       {loading && (
-        <div className="flex gap-4">
-            <img
-                src={sweet1}
-                className="w-12 h-12 rounded-full shadow-lg border-2 border-white bounce1"
-            />
+        <div className="flex flex-col items-center">
+          {/* Jumping sweets */}
+          <div className="flex gap-4 mb-3">
+            <img src={sweet1} className="w-12 h-12 rounded-full shadow-lg border-2 border-white bounce1" />
+            <img src={sweet2} className="w-12 h-12 rounded-full shadow-lg border-2 border-white bounce2" />
+            <img src={sweet3} className="w-12 h-12 rounded-full shadow-lg border-2 border-white bounce3" />
+          </div>
 
-            <img
-                src={sweet2}
-                className="w-12 h-12 rounded-full shadow-lg border-2 border-white bounce2"
-            />
-
-            <img
-                src={sweet3}
-                className="w-12 h-12 rounded-full shadow-lg border-2 border-white bounce3"
-            />
-
-            <p className="mt-5 text-xl font-semibold text-orange-700 animate-pulse">
+          {/* Preparing text BELOW the sweets */}
+          <p className="text-xl font-semibold text-orange-700 animate-pulse tracking-wide">
             Preparing sweets...
           </p>
         </div>
-
       )}
 
       {/* ---------------------- VIDEO SECTION ---------------------- */}
@@ -56,25 +44,36 @@ export default function Hero() {
             autoPlay
             muted
             playsInline
-            onEnded={() => setShowVideo(false)}
+            // onEnded={() => setShowVideo(false)}
+            loop
             className="w-full h-full object-cover"
           >
             <source src={vid1} />
           </video>
 
           {/* TEXT ON VIDEO */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <h1 className="text-white text-3xl md:text-5xl font-bold bg-black/40 px-6 py-3 rounded-xl backdrop-blur">
-              Welcome to Our Sweet World 🍬
-            </h1>
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <div className="bg-black/40 backdrop-blur-lg px-5 py-4 rounded-xl max-w-lg text-center">
+              <h1 className="text-white text-2xl md:text-3xl font-bold mb-3">
+                Welcome to Our Sweet World 🍬
+              </h1>
+
+              <p className="text-white text-sm md:text-base leading-relaxed">
+                Handcrafted with love using pure and natural ingredients.  
+                Inspired by traditional recipes passed through generations.  
+                Freshly prepared, hygienic, and made to perfection for every celebration.
+              </p>
+            </div>
           </div>
         </div>
       )}
 
-      {/* ---------------------- AFTER VIDEO (KEEP EMPTY FOR NOW) ---------------------- */}
+      {/* ---------------------- AFTER VIDEO ---------------------- */}
       {!loading && !showVideo && (
         <div className="absolute inset-0 flex items-center justify-center text-white">
-          <h1 className="text-4xl font-bold">Sweet Section Coming… 🍭</h1>
+          <h1 className="text-4xl font-bold text-orange-700">
+            Sweet Section Coming… 🍭
+          </h1>
         </div>
       )}
 

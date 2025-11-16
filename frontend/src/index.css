@@ -22,6 +22,8 @@
   }
 }
 
+
+
 .rotate-in {
   animation: rotate-in 0.9s ease-out forwards;
 }
@@ -58,6 +60,8 @@
 .bounce3 {
   animation: cuteBounce 0.9s infinite ease-in-out 0.4s;
 }
+
+
 
 
 

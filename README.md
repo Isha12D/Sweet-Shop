@@ -2,28 +2,65 @@
 
 ## 1. Overview
 
-A clear and concise explanation of the project goes here. Describe what the project does, its purpose, and the main problem it solves.
-
-## 2. Features
-
-* List key features of your application.
-* Explain why each feature is useful.
+The Sweet Shop Management System is a visually appealing and fully functional web application designed to simplify and modernize how a sweets store manages its products and interacts with customers. The project consists of two major parts — Admin Panel and User Storefront, providing a complete end-to-end workflow.
 
 ---
+
+## 2. ✨ Features Overview
+
+
+### 👨‍🍳 **User Interface**
+
+#### **Elegant Hero Section**
+- Animated loader (jumping sweets)
+- Infinite looping video background
+- Soft, premium sweet-shop theme
+
+#### **Sweets Section**
+- High-quality sweet images
+- Displays name, price, and available stock
+- Increment / decrement buttons for quantity
+- Dummy search bar
+- Category & price filter options
+- Fully mobile-responsive UI
+
+
+### 🛠️ **Admin Panel**
+
+- Secure **JWT-based login**
+- Interactive admin dashboard with:
+  - Total sweets count
+  - Stock overview
+  - Quick action buttons
+- Full inventory control:
+  - Add new sweets
+  - Edit sweet details (price & quantity)
+  - Manage entire stock efficiently
+
+### 🔐 **Authentication**
+
+- Separate **User** and **Admin** login flows
+- Tokens stored securely using `localStorage`
+- Automatic role-based redirection
+- User initials displayed in navbar after login
+
+---
+
+
 
 ## 3. Tech Stack
 
 ### **Frontend:**
 
-* React / Vite / Tailwind CSS (or your stack)
+* React Vite + Tailwind CSS 
 
 ### **Backend:**
 
-* Node.js / Express (or your stack)
+* Node.js + Express  + Typescript
 
 ### **Database:**
 
-* Firebase / MongoDB / MySQL (whichever applies)
+* MongoDB 
 
 ---
 
@@ -102,17 +139,16 @@ http://localhost:5173
 
 ## 5. Screenshots
 
-Add your application screenshots here.
-
 ### **Home Page**
-
+![Animated Loader Screenshot](./screenshots/loader.png)
 ![Home Screenshot](./screenshots/home.png)
 
 ### **Dashboard**
 
-![Dashboard Screenshot](./screenshots/dashboard.png)
+![Dashboard Screenshot](./screenshots/sweets.png)
 
-> Replace the image paths with actual files.
+### **Admin Dashboard**
+![Admin Dashboard Screenshot](./screenshots/admin.png)
 
 ---
 

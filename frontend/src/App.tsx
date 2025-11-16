@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 import AdminDashboard from "./components/AdminDashboard";
+import Sweets from './components/Sweets';
 
 import { UserProvider } from "./context/UserContext";
 import { AdminProvider } from "./context/AdminContext";
@@ -18,7 +19,7 @@ function App() {
             <Route path="/" element={<Hero />} />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
-
+          <Sweets/>
           <Footer />
         </AdminProvider>
       </UserProvider>
