@@ -141,7 +141,7 @@ http://localhost:5173
 
 ### **Home Page**
 ![Animated Loader Screenshot](./screenshots/loader.png)
-![Home Screenshot](./screenshots/home.png)
+![Home Screenshot](./screenshots/Home.png)
 
 ### **Dashboard**
 
